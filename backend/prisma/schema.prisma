@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cars {
+  id        Int         @id @default(autoincrement())
+  user_id   Int
+  plate     String      @db.VarChar(7)
+  make      String      @db.VarChar(30)
+  model     String      @db.VarChar(30)
+  color     String      @db.VarChar(30)
+  Users     Users       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Cars_ibfk_1")
+  Positions Positions[]
+
+  @@index([user_id], map: "user_id")
+}
+
+model Users {
+  id       Int      @id @default(autoincrement())
+  username String   @db.VarChar(50)
+  password String   @db.VarChar(64)
+  email    String   @db.VarChar(50)
+  is_admin Boolean? @default(false)
+  Cars     Cars[]
+}
+
+model Positions {
+  id     Int   @id @default(autoincrement())
+  car_id Int
+  lat    Float @db.Float
+  lon    Float @db.Float
+  Cars   Cars  @relation(fields: [car_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Positions_ibfk_1")
+
+  @@index([car_id], map: "car_id")
+}
