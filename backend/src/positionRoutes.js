@@ -33,9 +33,12 @@ PositionRouter.post('/', async (req, res, next) => {
     try {
         const car = await prisma.positions.create({
             data: {
-                car_id: parseInt(req.body.car_id),
+                // car_id: parseInt(req.body.car_id),
                 lat: parseFloat(req.body.lat),
                 lon: parseFloat(req.body.lon),
+                Cars: {
+                    connect: { id: parseInt(req.body.car_id) }  // assuming the 'id' field of Cars is the one you're referencing
+                }
             },
         })
         res.status(200).send(car)
@@ -44,20 +47,19 @@ PositionRouter.post('/', async (req, res, next) => {
 
 PositionRouter.put('/', async (req, res, next) => {
     try {
-        let id = req.body.id || req.params.id || req.query.id || undefined
+        // let id = req.body.id || req.params.id || req.query.id || undefined
 
-        if (id === undefined) return res.status(400).json({ message: 'id not found in request' })
-        const car = await prisma.positions.update({
+        // if (id === undefined) return res.status(400).json({ message: 'id not found in request' })
+        const car = await prisma.positions.updateMany({
             where: {
-                id: parseInt(id),
+                car_id: parseInt(req.body.car_id)
             },
             data: {
-                car_id: (req.body.car_id ? parseInt(req.body.car_id) : undefined),
-                lon: hasColumn(req.body.lon),
-                lat: hasColumn(req.body.lat),
+                lon: req.body.lon,
+                lat: req.body.lat,
             }
         })
-        res.sendStatus(200)
+        res.status(200).send(car)
     } catch (err) { next(err) }
 })
 

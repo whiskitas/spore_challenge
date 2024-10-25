@@ -44,7 +44,13 @@ CarRouter.post('/', async (req, res, next) => {
                 plate: req.body.plate,
                 make: req.body.make,
                 model: req.body.model,
-                color: req.body.color
+                color: req.body.color,
+                Positions: { // Create an associated position
+                    create: {
+                        lat: 0, // Set latitude to 0
+                        lon: 0, // Set longitude to 0
+                    },
+                },
             },
         })
         res.status(200).send(car)

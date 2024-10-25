@@ -46,26 +46,7 @@ export default {
   },
   methods: {
     async handleLogin() {
-
-      // const router = useRouter();
       let httpService = new HttpService();
-      // const registerUser = async () => {
-      //   if (registerForm.value.validate()) {
-      //     try {
-      //       const result = await httpService.post('/user', {
-      //         username: user.value.name,
-      //         email: user.value.email,
-      //         password: user.value.password
-      //       });
-      //       console.log(result);
-      //       router.push('/login');
-      //     } catch (err) {
-      //       alert("registration failed")
-      //       console.log(err);
-      //     }
-      //   }
-      // };
-
       try {
         const result = await httpService.post('/user/login', {
           email: this.email,
@@ -77,20 +58,10 @@ export default {
         localStorage.setItem('JWTtoken', result.token);
         localStorage.setItem('userId', String(result.id));
         this.$router.push('/');
-        // router.push('/login');
       } catch (err) {
         alert("registration failed")
         console.log(err);
       }
-
-      // // Example login logic: Check for hardcoded email and password
-      // if (this.email === 'admin@example.com' && this.password === 'password') {
-      //   alert('Login successful!');
-      //   localStorage.setItem('isAuthenticated', 'true');
-      //   this.$router.push('/'); // Redirect to home page
-      // } else {
-      //   alert('Invalid email or password.');
-      // }
     }
   }
 };

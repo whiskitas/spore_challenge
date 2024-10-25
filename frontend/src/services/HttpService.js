@@ -1,12 +1,13 @@
 export default class HttpService {
-    baseURL = "http://localhost:3000"
-    constructor() { }
-
+    constructor() {
+        this.baseURL = "http://localhost:3000";
+    }
     // constructor(baseURL) {
     //   this.baseURL = baseURL;
     // }
 
     // Helper method for sending requests
+    // eslint-disable-next-line
     async request(endpoint, method = 'GET', body = null, headers = {}) {
         const config = {
             method,
@@ -16,14 +17,17 @@ export default class HttpService {
             },
         };
 
-        if (body) { config.body = JSON.stringify(body) }
+        if (body) {
+            // eslint-disable-next-line
+            config.body = JSON.stringify(body)
+        }
 
         try {
             const response = await fetch(`${this.baseURL}${endpoint}`, config);
-            if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`) }
-            return await response.json();
+            if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
+            return response.json();
         } catch (error) {
-            console.error('Request failed:', error);
+            console.log(error);
             throw error;
         }
     }
@@ -40,7 +44,11 @@ export default class HttpService {
 
     // PUT request
     put(endpoint, body, headers = {}) {
-        return this.request(endpoint, 'PUT', body, headers);
+        try {
+            return this.request(endpoint, 'PUT', body, headers);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     // DELETE request

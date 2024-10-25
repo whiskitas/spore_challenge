@@ -73,6 +73,7 @@ export default {
                         model: this.form.model,
                         color: this.form.color
                     });
+                    
                     console.log(result);
                     this.$router.push('/data');
                 } catch (err) {
